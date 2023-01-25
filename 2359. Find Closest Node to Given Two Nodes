@@ -1,0 +1,34 @@
+class Solution {
+public:
+    void dfs(vector<int>& edges, int node, int arr[], bool visited[], int distance){
+        if(node==-1 || visited[node])return;
+        if(!visited[node])arr[node]=distance;
+        visited[node]=true;
+        dfs(edges, edges[node], arr, visited, distance+1);
+    }
+    int closestMeetingNode(vector<int>& edges, int node1, int node2) {
+        int n=edges.size();
+        int arr1[n];
+        int arr2[n];
+        bool visited1[n];
+        bool visited2[n];
+        for(int i=0;i<n;i++){
+            arr1[i]=-1;
+            arr2[i]=-1;
+            visited1[i]=false;
+            visited2[i]=false;
+        }
+        dfs(edges, node1, arr1, visited1, 0);
+        dfs(edges, node2, arr2, visited2, 0);
+        int dist=INT_MAX;
+        int result=-1;
+        for(int i=0;i<n;i++){
+            if(arr1[i]!=-1 && arr2[i]!=-1){
+                int prev=dist;
+                dist=min(max(arr1[i], arr2[i]), dist);
+                if(prev!=dist)result=i;
+            }
+        }
+        return result;
+    }
+};
