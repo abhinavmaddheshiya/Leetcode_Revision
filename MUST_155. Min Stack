@@ -1,3 +1,48 @@
+/*
+space complexity = O(n)
+class MinStack {
+public:
+    stack<long long> v;
+    long long mini;
+    MinStack() {
+        mini=INT_MAX;
+    }
+    
+    void push(int val) {
+        long long value=val;
+        if(v.empty()){
+            mini=value;
+            v.push(value);   
+        }
+        else if(mini>value){
+            long long temp = (2*value)-mini;
+            mini=value;
+            v.push(temp);
+        }else{
+            v.push(value);
+        }
+    }
+    
+    void pop() {
+        if(mini>v.top()){
+            mini = (2*mini)-v.top();
+        }
+        v.pop();
+    }
+    
+    int top() {
+        if(mini>v.top()){
+            return mini;
+        }
+        return v.top();
+    }
+    
+    int getMin() {
+        return mini;
+    }
+};
+*/
+
 class MinStack {
 public:
     pair<int, int> p;
