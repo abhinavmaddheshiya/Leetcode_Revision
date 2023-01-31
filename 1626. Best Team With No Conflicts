@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
+        vector<vector<int>> helper;
+        int size=scores.size();
+        for(int i=0;i<size;i++){
+            helper.push_back({-ages[i], -scores[i]});
+        }
+        sort(helper.begin(), helper.end());
+        for(int i=0;i<size;i++){
+            helper[i][0]=(-1)*helper[i][0];
+            helper[i][1]=(-1)*helper[i][1];
+        }
+        //target is the longest decreasing subsequence (its sum is answer)
+        int dp[size];
+        memset(dp, 0, sizeof dp);
+        int ans=0;
+        for(int i=0;i<size;i++){
+            for(int j=i;j>=0;j--){
+                if(helper[j][1]>=helper[i][1]){
+                    dp[i]=max(dp[i], dp[j]+helper[i][1]);
+                }
+            }
+            ans = max(ans, dp[i]);
+        }
+        return ans;
+    }
+};
