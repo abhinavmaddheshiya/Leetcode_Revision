@@ -1,0 +1,35 @@
+
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int i=inorder.size();
+        int p=postorder.size();
+        return build(inorder, postorder, 0, i-1, 0, p-1);
+    }
+private:
+    TreeNode* build(vector<int>& inorder, vector<int>& postorder, int inStart, int inEnd, int postStart, int postEnd) {
+        if(inStart>inEnd || postStart>postEnd)return NULL;
+        int root=postorder[postEnd];
+        TreeNode* node=new TreeNode(root);
+        int i=inStart;
+        int rootIdx;
+        while(i<=inEnd){
+            if(inorder[i]==root){
+                rootIdx=i;
+                break;
+            }
+            i++;
+        }
+        int linS=inStart;
+        int linE=rootIdx-1;
+        int lpostS=postStart;
+        int lpostE=linE-linS+lpostS;
+        int rinE=inEnd;
+        int rinS=rootIdx+1;
+        int rpostE=postEnd-1;
+        int rpostS=lpostE+1;
+        node->left=build(inorder, postorder, linS, linE, lpostS, lpostE);
+        node->right=build(inorder, postorder, rinS, rinE, rpostS, rpostE);
+        return node;
+    }
+};
