@@ -1,0 +1,80 @@
+class TrieNode {
+public:
+    char data;
+    vector<TrieNode*> children;
+    bool isTerminal;
+    TrieNode(char data) {
+        this->data=data;
+        vector<TrieNode*> child(26, NULL);
+        this->children=child;
+        this->isTerminal=false;
+    }
+};
+class Trie {
+    TrieNode* root;
+public:
+    Trie() {
+        root=new TrieNode('\0');
+    }
+    
+    void insert(TrieNode* root, string word) {
+        if(word.size()==0){
+            root->isTerminal=true;
+            return;
+        }
+        int idx=word[0]-'a';
+        TrieNode* child;
+        if(root->children[idx]!=NULL){
+            child=root->children[idx];
+        }else{
+            child = new TrieNode(word[0]);
+            root->children[idx]=child;
+        }
+        insert(child, word.substr(1));
+    }
+
+    void insert(string word) {
+        insert(root, word);
+    }
+
+    bool search(TrieNode* root, string word) {
+        if(word.size()==0){
+            if(root->isTerminal)return true;
+            else return false;
+        }
+        int idx=word[0]-'a';
+        TrieNode* child;
+        if(root->children[idx]!=NULL){
+            child=root->children[idx];
+            return search(child, word.substr(1));
+        }
+        return false;
+    }
+    
+    bool search(string word) {
+        return search(root, word);
+    }
+
+    bool startsWith(TrieNode* root, string prefix) {
+        if(prefix.size()==0)return true;
+        int idx=prefix[0]-'a';
+        TrieNode* child;
+        if(root->children[idx]!=NULL){
+            child=root->children[idx];
+            return startsWith(child, prefix.substr(1));
+        }
+        return false;
+    }
+
+    bool startsWith(string prefix) {
+        return startsWith(root, prefix);
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
