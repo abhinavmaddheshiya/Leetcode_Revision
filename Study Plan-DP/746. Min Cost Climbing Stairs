@@ -1,3 +1,4 @@
+// https://youtu.be/ktmzAZWkEZ0
 class Solution {
 public:
     int minCostClimbingStairs(vector<int>& cost) {
