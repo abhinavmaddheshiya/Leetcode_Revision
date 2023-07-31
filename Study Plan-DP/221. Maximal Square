@@ -1,0 +1,21 @@
+// https://youtu.be/nZAyRZC8tko
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int res=0, n=matrix.size(), m=matrix[0].size();
+        vector<vector<int>> dp(n, vector<int>(m, 0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]!='0'){
+                    int up=0, left=0, diag=0;
+                    if(i-1>=0)up=dp[i-1][j];
+                    if(j-1>=0)left=dp[i][j-1];
+                    if(i-1>=0 && j-1>=0)diag=dp[i-1][j-1];
+                    dp[i][j]=(1+min(diag, min(up, left)));
+                    res=max(res, dp[i][j]);
+                }else dp[i][j]=0;
+            }
+        }
+        return res*res;
+    }
+};
