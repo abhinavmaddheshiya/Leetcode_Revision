@@ -1,0 +1,47 @@
+// https://youtu.be/FWAIf_EVUKE
+class Solution {
+public:
+    bool isSafe(int row, int col, char num, vector<vector<char>>& board){
+        //row, col
+        for(int i=0;i<9;i++){
+            if(board[i][col]==num)return false;
+            if(board[row][i]==num)return false;
+            // if(board[3*(row/3)+i/3][3*(col/3)+i%3]==num)return false;
+        }
+        //sub-boxes
+        int indX=row-(row%3), indY=col-(col%3);
+        int limitX=indX+3, limitY=indY+3, cpyX=indX, cpyY=indY;
+        while(indX<limitX){
+            indY=cpyY;
+            while(indY<limitY){
+                if(board[indX][indY]==num)return false;
+                indY++;
+            }
+            indX++;
+        }
+        return true;
+    }
+    bool solve(vector<vector<char>>& board){
+        for(int row=0;row<9;row++){
+            for(int col=0;col<9;col++){
+                if(board[row][col]=='.'){
+                    for(char num='1';num<='9';num++){
+                        if(isSafe(row, col, num, board)){
+                            board[row][col]=num;
+//not able to identify where to place return true in first attempt
+                            if(solve(board))return true;
+                            else board[row][col]='.';
+                        }
+                    }
+//not able to identify where to place return false in first attempt
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    void solveSudoku(vector<vector<char>>& board) {
+//did the solve code in this function only which is wrong as return(true/false) cannot be made which represents whether all positions are filled or not
+        solve(board);
+    }
+};
