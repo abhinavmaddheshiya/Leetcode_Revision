@@ -1,0 +1,20 @@
+// https://youtu.be/YaMcX7sem70?si=oUeLBo2XVmdW69hG
+class Solution {
+public:
+    int longestArithSeqLength(vector<int>& nums) {
+        int n=nums.size(), ans=0;
+        unordered_map<int, int> dp[n+1];
+        for(int i=1;i<n;i++){// i is in ap
+            for(int j=0;j<i;j++){//as per j, 
+            // diff for sequence in which i is an element
+                int diff=nums[i]-nums[j];
+                int cnt=1;
+                if(dp[j].count(diff))
+                    cnt=dp[j][diff];
+                dp[i][diff]=1+cnt;
+                ans=max(ans, dp[i][diff]);
+            }
+        }
+        return ans;
+    }
+};
