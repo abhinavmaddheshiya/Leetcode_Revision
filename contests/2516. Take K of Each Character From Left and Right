@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int takeCharacters(string s, int k) {
+        int n=s.size();
+        int left=-1, right=n;
+        int counta=0, countb=0, countc=0;
+        for(int i=0;i<n;i++){
+            if(s[i]=='a')counta++;
+            else if(s[i]=='b')countb++;
+            else countc++;
+        }
+        if(k>counta || k>countb || k>countc)return -1;
+        //substring of max length such that it contains atmost 'counta-k' a and 'countb-k' b and 'countc-k' c
+        int maxi=0;//length of substring
+        int i=0, j=0, suba=0, subb=0, subc=0;
+        while(i!=n){
+            if(s[i]=='a')suba++;
+            else if(s[i]=='b')subb++;
+            else subc++;
+            if(suba<=counta-k && subb<=countb-k && subc<=countc-k){
+                maxi=max(maxi, i-j+1);
+            }else{
+                while(!(suba<=counta-k && subb<=countb-k && subc<=countc-k)){
+                    if(s[j]=='a')suba--;
+                    else if(s[j]=='b')subb--;
+                    else subc--;
+                    j++;
+                }
+            }
+            i++;
+        }
+        return n-maxi;
+    }
+};
