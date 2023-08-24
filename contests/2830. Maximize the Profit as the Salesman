@@ -1,0 +1,31 @@
+// https://youtu.be/Vk_ItvUIGEE?si=ghQ4ZE9mivCiMJmv
+class Solution {
+public:
+    int solve(int ind, vector<vector<int>>& offers, int size, vector<int>& mem){
+        if(ind>=size)return 0;
+        if(mem[ind]!=-1)return mem[ind];
+        int nottake=0+solve(ind+1, offers, size, mem);
+        int nextHouse=offers[ind][1]+1;
+        int low=ind+1, high=size-1, next_ind=size;
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            if(offers[mid][0]>=nextHouse){
+                high=mid-1;
+                next_ind=mid;
+            }else{
+                low=mid+1;
+            }
+        }
+        int take=offers[ind][2]+solve(next_ind, offers, size, mem);
+        // if(offers[ind][0]>prev)
+            // take=offers[ind][2]+solve(ind+1, offers[ind][1], offers, size, mem);
+        return mem[ind]=max(take, nottake);
+    }
+    int maximizeTheProfit(int n, vector<vector<int>>& offers) {
+        sort(offers.begin(), offers.end());
+        int size=offers.size();
+        // vector<vector<int>> mem(size, vector<int>(n+1, -1));
+        vector<int> mem(size, -1);
+        return solve(0, offers, size, mem);
+    }
+};
