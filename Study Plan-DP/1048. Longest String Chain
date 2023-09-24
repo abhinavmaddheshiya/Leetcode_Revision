@@ -1,0 +1,37 @@
+class Solution {
+public:
+    static bool cmp(string a, string b){
+        return a.length()<b.length();
+    }
+    bool checkPredecessor(string s, string t){
+        int lenS=s.size(), lenT=t.size();
+        if(lenS+1!=lenT)return false;
+        int i=0;
+        for(int j=0;j<lenT;j++){
+            if(i<lenS && s[i]==t[j]){
+                i++;
+            }
+        }
+        if(i==lenS)return true;
+        return false;
+    }
+    int solve(vector<string>& words, vector<vector<int>>& dp){
+        int size=words.size();
+        for(int ind=size-1;ind>=0;ind--){
+            for(int prev=-1;prev<ind;prev++){
+                int ans=dp[ind+1][prev+1];//nottake
+                if(prev==-1 || checkPredecessor(words[prev], words[ind])){
+                    ans=max(ans, 1+dp[ind+1][ind+1]);//take
+                }
+                dp[ind][prev+1]=ans;
+            }
+        }
+        return dp[0][-1+1];
+    }
+    int longestStrChain(vector<string>& words) {
+        int len=words.size();
+        sort(words.begin(), words.end(), cmp);
+        vector<vector<int>> dp(len+1, vector<int>(len+1, 0));
+        return solve(words, dp);
+    }
+};
