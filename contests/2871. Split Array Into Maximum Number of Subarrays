@@ -1,23 +1,24 @@
 class Solution {
 public:
     int maxSubarrays(vector<int>& nums) {
-        int maxScore = INT_MAX;
-        int n = nums.size();
-        for(int i=0;i<n;i++)
-            maxScore&=nums[i];
-        if(maxScore != 0)
-            return 1;
-        int cnt=0;
-        int curr = INT_MAX;
-        for(int i=0;i<n;i++)
-        {
+        //we know OR operator i constructive op and AND op is destructive op
+        //so as nums increases in size in OR operation resultant OR result will increase
+        //similarly as nums increases in size in AND operation resultant AND result will decrease
+        int maxScore=INT_MAX;
+        //notes num AND INTMAX is num itself; ex-> 101 AND 1111111111 => 000000000101
+        for(auto num:nums){
+            maxScore&=num;
+        }
+        if(maxScore!=0)return 1;//array can't be split
+        int n=nums.size(), curr=INT_MAX;
+        int split=0;
+        for(int i=0;i<n;i++){
             curr&=nums[i];
-            if(curr == maxScore)
-            {
-                cnt++;
-                curr = INT_MAX;
+            if(curr==maxScore){
+                curr=INT_MAX;
+                split++;
             }
         }
-        return cnt;
+        return split;
     }
 };
