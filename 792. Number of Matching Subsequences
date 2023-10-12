@@ -1,0 +1,40 @@
+//https://youtu.be/PwQnydsKk_I?si=fYfENLKqerNpQKpS
+//O(5*10^4 + 5000*50*(log5*10^4))
+class Solution {
+public:
+    int numMatchingSubseq(string s, vector<string>& words) {
+        unordered_map<int, vector<int>> letters;
+        for(int i=0;i<s.size();i++){
+            int letter=s[i]-'a';
+            letters[letter].push_back(i);
+        }
+        int cnt=0;
+        for(int i=0;i<words.size();i++){
+            string curr=words[i];
+            int n=curr.size(), j=0;
+            int low=-1;
+            for(;j<n;j++){
+                int alphaKey=curr[j]-'a';
+                if(letters.find(alphaKey)==letters.end())break;
+                else{
+                    int start=0, end=letters[alphaKey].size()-1;
+                    int minLow=INT_MAX;
+                    while(start<=end){
+                        int mid=start+(end-start)/2;
+                        if(letters[alphaKey][mid]>low){
+                            minLow=letters[alphaKey][mid];
+                            end=mid-1;
+                        }
+                        else{
+                            start=mid+1;
+                        }
+                    }
+                    if(minLow!=INT_MAX && minLow>low)low=minLow;
+                    else break;
+                }
+            }
+            if(j==n)cnt++;
+        }
+        return cnt;
+    }
+};
