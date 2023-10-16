@@ -1,1 +1,26 @@
-/
+// https://youtu.be/neaCFDgBBn8?si=xhg7LWJWz_H9I89b
+class Solution {
+public:
+    vector<int> findIndices(vector<int>& nums, int indexDifference, int valueDifference) {
+        int n=nums.size();
+        vector<pair<int, int>> maxmin(n);
+        maxmin[n-1]={ nums[n-1], nums[n-1] };
+        for(int i=n-2;i>=0;i--){
+            maxmin[i].first=max(nums[i], maxmin[i+1].first);
+            maxmin[i].second=min(nums[i], maxmin[i+1].second);
+        }
+
+        for(int i=0;i<n;i++){
+            int tarInd=i+indexDifference;
+            if(tarInd>=n)continue;
+            if(abs(nums[i]-maxmin[tarInd].first)>=valueDifference || abs(nums[i]-maxmin[tarInd].second)>=valueDifference){
+                for(int j=tarInd;j<n;j++){
+                    if(abs(nums[i]-nums[j])>=valueDifference){
+                        return {i, j};
+                    }
+                }
+            }
+        }
+        return {-1, -1};
+    }
+};
