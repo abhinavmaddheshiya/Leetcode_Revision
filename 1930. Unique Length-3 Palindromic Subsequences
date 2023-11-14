@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int countPalindromicSubsequence(string s) {
+        int n=s.size();
+        unordered_set<char> appeared;
+        for(int i=0;i<n;i++)
+            appeared.insert(s[i]);
+
+        int cnt=0;
+        for(auto it:appeared){
+            char c=it;
+            vector<int> bw(26, 0);
+            int start=INT_MAX, end=INT_MIN;
+            for(int i=0;i<n;i++){
+                if(s[i]==c){
+                    start=min(start, i);
+                    end=max(end, i);
+                }
+            }
+            if(start==end)continue;
+            for(int i=start+1;i<end;i++){
+                bw[s[i]-'a']++;
+            }
+            for(int i=0;i<26;i++)
+                if(bw[i])cnt++;
+        }
+        return cnt;
+    }
+};
